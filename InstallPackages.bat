@@ -1,35 +1,42 @@
 @echo off
 
-echo Downloading Python installer...
-curl -o python-installer.exe https://www.python.org/ftp/python/3.8.1/python-3.8.1-amd64.exe
+REM Set Python version
+set PYTHON_VERSION=3.11.0
 
-echo Installing Python...
-python-installer.exe /quiet /passive TargetDir="%USERPROFILE%\AppData\Local\Programs\Python\Python38\"
+REM Set the virtual environment name
+set VENV_NAME=myenv
+
+REM Set the log file name
+set LOG_FILE=install_log.txt
 
 
-REM Add Python and pip paths to environment variables
-echo Updating environment variables...
-setx PATH "%USERPROFILE%\AppData\Local\Programs\Python\Python38\;%USERPROFILE%\AppData\Local\Programs\Python\Python38\Scripts;%PATH%"
-setx PYTHONPATH "%USERPROFILE%\AppData\Local\Programs\Python\Python38\;%USERPROFILE%\AppData\Local\Programs\Python\Python38\Lib;%PYTHONPATH%"
+REM Create and activate the virtual environment
+echo Creating virtual environment...
+python -m venv %VENV_NAME%
+call %VENV_NAME%\Scripts\activate.bat
 
 REM Install required Python packages using pip
 echo Installing required packages...
+
 echo Installing pandas...
-python -m pip install pandas
+python -m pip install pandas >> %LOG_FILE%
+
+echo Installing wheel...
+python -m pip install wheel >> %LOG_FILE%
 
 echo Installing streamlit...
-python -m pip install streamlit
+python -m pip install streamlit >> %LOG_FILE%
 
 echo Installing sqlite3...
-python -m pip install sqlite3
+python -m pip install sqlite3 >> %LOG_FILE%
 
 echo Installing barcode...
-python -m pip install barcode 
+python -m pip install barcode >> %LOG_FILE%
 
 echo Installing python-barcode...
-python -m pip install python-barcode 
+python -m pip install python-barcode >> %LOG_FILE%
 
 echo Installing prettytable...
-python -m pip install prettytable 
+python -m pip install prettytable >> %LOG_FILE%
 
 echo Done!
